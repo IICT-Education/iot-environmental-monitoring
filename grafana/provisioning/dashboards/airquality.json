@@ -1,0 +1,23 @@
+{
+    "id": null,
+    "uid": "air-overview",
+    "title": "AirQuality Overview",
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "type": "timeseries",
+        "title": "Airquality",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "InfluxDB"
+        },
+        "targets": [
+          {
+            "query": "from(bucket:\"sensors\") |> range(start: -1h) |> filter(fn: (r) => r.sensor_type == \"air\")"
+          }
+        ]
+      }
+    ]
+  }
+  

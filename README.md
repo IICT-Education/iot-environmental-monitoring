@@ -24,34 +24,39 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
-## Tasks - Sprint 1 - Network and Broker Setup
+## Sprint 3 – Dashboard & Visualization
 
 **Goal:**  
-Establish the MQTT communication layer and implement a basic sensor simulation.
+Integrate **Grafana** with **InfluxDB** to visualize sensor data and configure alerts for key environmental parameters.
 
 **Main Tasks**
-1. **Set up the MQTT Broker**  
-   - Start a local or Docker-based Mosquitto broker.  
-   - Verify it listens on port 1883 and accepts connections.
+1. **Add Grafana to Docker Compose**  
+   - Extend the existing setup with a Grafana service connected to InfluxDB.  
+   - Expose port `3001` and mount provisioning folders for datasources and dashboards.
+   - Create a named volume `grafana-data`
 
-2. **Create Sensor Simulation**  
-   - Write `sensor_sim.py` to publish temperature data using a uniform distribution.  
-   - Include basic parameters (e.g., update interval, topic name).  
+2. **Create Dashboards**  
+   - Design dashboards for temperature, humidity, CO₂, PM₂․₅, and PM₁₀.  
+   - Use Flux queries to show live and historical data.  
+   - Ensure panels are grouped per sensor type and include time filters.
 
-3. **Implement Console Subscriber**  
-   - Subscribe to `city/sensors/<sensor-type>/data`.  
-   - Print incoming messages with timestamps and sensor type information.  
+3. **Configure Alerts**  
+   - Add thresholds such as:  
+     - CO₂ > 1000 ppm  
+     - PM₂․₅ > 35 µg/m³  
+     - Temperature > 35 °C  
+   - Verify alerts
 
-4. **Extend for Multiple Sensor Types**  
-   - Add functions for `temperature`, `humidity`, `CO₂`, `PM₂․₅`, and `PM₁₀`.  
-   - Each sensor runs in its own thread with individual intervals and IDs.  
+4. **Persist Configuration**  
+   - Version-control provisioning files under `grafana/provisioning/`.  
+   - Exclude Grafana runtime data (`grafana/data/`, `grafana/logs/`) in `.gitignore`.
 
-5. **Test and Validate Data Flow**  
-   - Run the simulation and subscriber concurrently.  
-   - Confirm that different sensor types publish to the correct topics and payloads.
+5. **Test End-to-End Data Flow**  
+   - Run `sensor_sim.py` → MQTT → InfluxDB → Grafana.  
+   - Verify dashboards update in real time and alerts trigger as expected.
 
 **Expected Outcome:**  
-A working MQTT data pipeline that publishes sensor readings to `city/sensors/<sensor-type>/data` and displays them on the subscriber console.
+A complete visualization pipeline where environmental data from simulated sensors is displayed and monitored in Grafana, with automatic alerting on critical values.
 
 
 ## Authors and Acknowledgment

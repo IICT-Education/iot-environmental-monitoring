@@ -1,0 +1,23 @@
+{
+    "id": null,
+    "uid": "temp-overview",
+    "title": "Temperature Overview",
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "type": "timeseries",
+        "title": "Temperature (°C)",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "InfluxDB"
+        },
+        "targets": [
+          {
+            "query": "from(bucket:\"sensors\") |> range(start: -5h) |> filter(fn: (r) => r.sensor_type == \"temp\" and r._field == \"temperature\")"
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,5 +1,11 @@
 # Project specific
 
+## Docker runtime data
+mosquitto/data
+mosquitto/log
+influxdb/data
+influxdb/config
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

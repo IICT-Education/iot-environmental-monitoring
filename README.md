@@ -5,6 +5,14 @@ You are working for a smart city project tasked with deploying an air quality mo
 The system must be low-cost, low-power, and scalable to hundreds of sensors. Cellular IoT would be too expensive; Wi-Fi has insufficient coverage.
 Your task is to prototype a solution using LPWAN technologies that balances coverage, power consumption, and data delivery. 
 
+## Getting Started
+Create a virtual environment, activate it and install the requirements
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+```
+
 ## Authors and Acknowledgment
 IICT - International IoT Communication Technologies GmbH
 

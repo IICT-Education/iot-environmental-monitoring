@@ -1,2 +1,4 @@
 paho-mqtt>=1.6.1
 python-dotenv>=1.0.0
+influxdb-client>=1.41.0
+

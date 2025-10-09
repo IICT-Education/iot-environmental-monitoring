@@ -1,4 +1,9 @@
 # Project specific
+influxdb/data
+influxdb/config
+
+mosquitto/log
+mosquitto/data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

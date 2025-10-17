@@ -45,22 +45,52 @@ def publish_temperature(sensor_id: str, interval: int):
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "temperature": round(random.uniform(18.0, 28.0), 2)
         }
-        # TASK: Publish the serialized JSON-message to the Broker using QoS Level 0
+        
+        msg_info = client.publish(f"{BASE_TOPIC}/{sensor_type}/data", json.dumps(payload))
+
+        if msg_info.is_published():
+            print(f"[{sensor_id}] Published: {payload}")
+            time.sleep(interval)
 
 
-        # TASK: Print the published message to the console if it has been published successfuly
+def publish_humidity(sensor_id: str, interval: int):
+    sensor_type = sensor_id.split("_")[0]
+    while True:
+        payload = {
+            "sensor_id": sensor_id,
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "humidity": round(random.uniform(30.0, 70.0), 2)
+        }
+        client.publish(f"{BASE_TOPIC}/{sensor_type}/data", json.dumps(payload))
+        print(f"[{sensor_id}] {payload}")
+        time.sleep(interval)
 
 
-# TASK: Create funtions that publish humidity and air-quality data
+def publish_air_quality(sensor_id: str, interval: int):
+    sensor_type = sensor_id.split("_")[0]
+    while True:
+        payload = {
+            "sensor_id": sensor_id,
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "pm2_5": round(random.uniform(5, 40), 1),
+            "pm10": round(random.uniform(10, 60), 1),
+            "co2": round(random.uniform(400, 1200), 1)
+        }
+        client.publish(f"{BASE_TOPIC}/{sensor_type}/data", json.dumps(payload))
+        print(f"[{sensor_id}] {payload}")
+        time.sleep(interval)
 
 
 # ---------------------------------------------------------------------
 # THREAD STARTUP
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    # TASK: add remaining sensor types (hum_<id>, air_<id>) with sending interval and respective functions to the sensor list
+    # list of sensor-descriptions with sensor-id, interval, function
     sensors = [
-        ("temp_01", 5, publish_temperature)
+        ("temp_01", 5, publish_temperature),
+        ("hum_01", 8, publish_humidity),
+        ("air_01", 12, publish_air_quality),
+        ("air_02", 15, publish_air_quality),
     ]
 
     for sensor_id, interval, func in sensors:

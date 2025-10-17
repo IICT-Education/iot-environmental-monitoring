@@ -39,7 +39,23 @@ def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
         print(f"Sensor ID:   {sensor_id}")
         print(f"Timestamp:   {payload.get('timestamp', 'n/a')}")
 
-        # TASK: Implement Conditional parsing per sensor type
+        if sensor_type.startswith("temp"):
+            print(f"Temperature: {payload.get('temperature', 'n/a')} °C")
+
+        elif sensor_type.startswith("hum"):
+            print(f"Humidity:    {payload.get('humidity', 'n/a')} %")
+
+        elif sensor_type.startswith("air"):
+            print(f"PM2.5:       {payload.get('pm2_5', 'n/a')} µg/m³")
+            print(f"PM10:        {payload.get('pm10', 'n/a')} µg/m³")
+            print(f"CO2:         {payload.get('co2', 'n/a')} ppm")
+            print(f"Temp:        {payload.get('temperature', 'n/a')} °C")
+            print(f"Humidity:    {payload.get('humidity', 'n/a')} %")
+
+        else:
+            print("Payload (unrecognized sensor type):")
+            print(json.dumps(payload, indent=2))
+
         
 
     except json.JSONDecodeError:

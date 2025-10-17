@@ -60,7 +60,7 @@ def generate_payload(sensor_type: str, sensor_id: str, pad: int = 0) -> dict:
 # ---------------------------------------------------------
 # Delay Simulation
 # ---------------------------------------------------------
-def delay(delay_mean=0.0, delay_jitter=0.0):
+def delay(delay_mean=0.0, delay_jitter=0.0) -> float:
     # TASK: Create a uniformly distributed delay using the function `def delay(delay_mean=0.0, delay_jitter=0.0):``
     pass
 
@@ -92,14 +92,15 @@ def sensor_thread(
         client.connect(broker, port, keepalive=60)
         client.loop_start()
         topic = f"city/sensors/{sensor_type}/data"
-
         while True:
+            used_delay = 0
             payload = generate_payload(sensor_type, sensor_id, pad=payload_pad)
-            delay(delay_mean, delay_jitter)
             if loss(loss_rate):
                 print(f"[LOSS] Dropped packet for {topic}")
-            client.publish(topic, json.dumps(payload), qos=qos, retain=False)
-            time.sleep(interval_s)
+            else:
+                used_delay = delay(delay_mean, delay_jitter)
+                client.publish(topic, json.dumps(payload), qos=qos, retain=False)
+            time.sleep(interval_s-used_delay)
 
     except KeyboardInterrupt:
         pass

@@ -6,6 +6,10 @@ mosquitto/log
 influxdb/data
 influxdb/config
 
+## Simulation data
+latency_log.csv
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

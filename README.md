@@ -24,39 +24,44 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
-## Sprint 3 – Dashboard & Visualization
+## Sprint 4 – Scalability & Testing
 
 **Goal:**  
-Integrate **Grafana** with **InfluxDB** to visualize sensor data and configure alerts for key environmental parameters.
+Evaluate the performance, reliability, and scalability of the IoT Environmental Monitoring System under varying load and network conditions. Optimize MQTT and InfluxDB settings for better stability and throughput.
 
 **Main Tasks**
-1. **Add Grafana to Docker Compose**  
-   - Extend the existing setup with a Grafana service connected to InfluxDB.  
-   - Expose port `3001` and mount provisioning folders for datasources and dashboards.
-   - Create a named volume `grafana-data`
+1. **Increase Sensor Simulation Scale**  
+   - Adjust the file `load_sim.py` to simulate at least 50 virtual sensors with different types.  
+   - Vary message intervals and payload sizes to create diverse traffic patterns.
+   - Observe CPU and memory usage with docker stats during simulation.
 
-2. **Create Dashboards**  
-   - Design dashboards for temperature, humidity, CO₂, PM₂․₅, and PM₁₀.  
-   - Use Flux queries to show live and historical data.  
-   - Ensure panels are grouped per sensor type and include time filters.
+2. **Measure System Performance**  
+   - Implement `latency_subscriber.py` that calculates the latency and stores the results into a csv file
+   - Monitor MQTT message throughput via the Broker statistics (`$SYS/#`) and store it to a log file
 
-3. **Configure Alerts**  
-   - Add thresholds such as:  
-     - CO₂ > 1000 ppm  
-     - PM₂․₅ > 35 µg/m³  
-     - Temperature > 35 °C  
-   - Verify alerts
+3. **Test Network Stability**  
+   - Introduce application layer network impairments to simulate LPWAN behavior
+      - Add unifromly distributed delay inside the application
+      - Drop packets based on a loss_rate
 
-4. **Persist Configuration**  
-   - Version-control provisioning files under `grafana/provisioning/`.  
-   - Exclude Grafana runtime data (`grafana/data/`, `grafana/logs/`) in `.gitignore`.
+4. **Optional: Optimize Reliability and Performance**  
+   - Adjust MQTT parameters such as QoS level (--qos 0 or --qos 1) and keepalive interval.
+   - Experiment with InfluxDB write modes (synchronous vs asynchronous).
+   - Tune client buffer sizes or batching behavior to reduce latency.
 
-5. **Test End-to-End Data Flow**  
-   - Run `sensor_sim.py` → MQTT → InfluxDB → Grafana.  
-   - Verify dashboards update in real time and alerts trigger as expected.
+5. **Analyze Results**  
+   - Record metrics in a table, as below:
+   
+| Test Case | Delay (ms) | Loss (%) | QoS | Data Loss (%) | Observation |
+|------------|-------------|----------|-----|----------------|-------------|
+| Baseline | 0 | 0 | 0 | 0 | Stable operation |
+| Stress | 200 | 5 | 0 | 15 |  |
+| Optimized | 200 | 5 | 1 | 2 |  |
+
 
 **Expected Outcome:**  
-A complete visualization pipeline where environmental data from simulated sensors is displayed and monitored in Grafana, with automatic alerting on critical values.
+A scaled-up and resilient prototype capable of handling tens of simulated sensors while maintaining consistent data delivery to InfluxDB and Grafana.
+Performance metrics and test observations demonstrate the system’s behavior under load, identify bottlenecks, and show measurable improvements after optimization
 
 
 ## Authors and Acknowledgment

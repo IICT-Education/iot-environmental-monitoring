@@ -26,11 +26,13 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=sensors
       - DOCKER_INFLUXDB_INIT_RETENTION=1w
     restart: unless-stopped
+  
   grafana:
     image: grafana/grafana:11.0.0
     container_name: grafana
     restart: unless-stopped
-
+    ports:
+      - "3001:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
@@ -50,3 +52,5 @@ services:
       - grafana-data:/var/lib/grafana
     depends_on:
       - influxdb
+volumes:
+  grafana-data:
